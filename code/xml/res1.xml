@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<body>
+    <response>
+        <ret_code>123</ret_code>
+        <ret_info>456</ret_info>
+        <member_num>789</member_num><!--会员标识-->
+        <membercode>0000</membercode><!--平台用户名-->
+        <access_token>手动阀手动阀</access_token><!--安全令牌-->
+    </response>
+</body>
