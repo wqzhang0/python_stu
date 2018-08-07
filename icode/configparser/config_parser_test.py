@@ -1,5 +1,6 @@
 import configparser
 
+
 def createIni():
     config = configparser.ConfigParser()
     config['DEFAULT'] = {'ServerAliveInterval': '45', 'Compression': 'yes',
@@ -15,16 +16,17 @@ def createIni():
 
     with open('example.ini', 'w') as configfile:
         config.write(configfile)
-if __name__ == '__main__':
 
+
+if __name__ == '__main__':
     config = configparser.ConfigParser()
-    print(config.sections())#[]
+    print(config.sections())  # []
     config.read('example.ini')
-    print(config.sections())#['bitbucket.org', 'topsecret.server.com']
+    print(config.sections())  # ['bitbucket.org', 'topsecret.server.com']
     topsecret = config['topsecret.server.com']
-    print(topsecret['Port'],type(topsecret['Port']))#50022 <class 'str'>
-    print(topsecret.getboolean('ForwardX11'))#False
-    print(topsecret['ForwardX11'])#no
+    print(topsecret['Port'], type(topsecret['Port']))  # 50022 <class 'str'>
+    print(topsecret.getboolean('ForwardX11'))  # False
+    print(topsecret['ForwardX11'])  # no
     paths = config["Paths"]
     print(paths)
     print(paths.get('home_dir'))
@@ -37,4 +39,3 @@ if __name__ == '__main__':
     print(config.items('Arthur', 'my_dir'))
     print(arthur)
     # print(arthur.get('my_dir'))
-
