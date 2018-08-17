@@ -14,6 +14,7 @@ class Weekday(Enum):
     Sat = 6
 
 
+
 if __name__ == '__main__':
     print(Weekday.Sat.value)
     print(type(Weekday.Sat))
@@ -24,3 +25,28 @@ if __name__ == '__main__':
     print(Weekday['Sun'].value)
 
     print(Weekday(2))
+
+    Month = Enum('Month', ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+    # Month = Enum('x', ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+    # 上面这段代码等价于：
+    #
+    # class x(Enum): Jan = 1
+    #
+    #
+    # Feb = 2
+    # Mar = 3
+    # Apr = 4
+    # May = 5
+    # Jun = 6
+    # Jul = 7
+    # Aug = 8
+    # Sep = 9
+    # Oct = 10
+    # Nov = 11
+    # Dec = 12
+    # Month = x
+    print(Month.Feb)
+    print(Month.Feb.value)
+
+    Weekday2 = Enum('x',('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+    print(Weekday2.Jan)
