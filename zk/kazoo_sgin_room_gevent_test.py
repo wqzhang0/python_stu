@@ -1,8 +1,15 @@
+import datetime
+import random
+import threading
 import time
 from collections import namedtuple
 
+import select
 from kazoo.client import KazooClient
 from os.path import join
+
+from icode.redis.redis_operation_test import redisOperation
+from zk.zk_wrapper import zkWatch
 
 zk = KazooClient(hosts='127.0.0.1:2181')
 
@@ -10,6 +17,15 @@ ROOT = "/ROOM"
 zk.start()
 
 ROOM_ID = "12354"
+
+import gevent
+from gevent import monkey
+
+monkey.patch_socket()
+"""
+600 线程 120count/s
+单个节点下数据 160 count/s
+"""
 
 
 # def get_children_watch(event):
@@ -96,12 +112,12 @@ def check_or_process(tmp_node):
             zk.create("/".join([ROOT, ROOM_ID]))
 
 
-
 def i_create():
     # 创建临时
     tmp_node = zk.create("/".join([ROOT, ROOM_ID, ""]), sequence=True, ephemeral=True)
     check_or_process(tmp_node)
     # node_list = zk.get_children("/".join([ROOT, ROOM_ID]), watch=get_children_watch)
+
 
 def getLockCallback(path):
     """
@@ -109,8 +125,50 @@ def getLockCallback(path):
     """
     zk.delete(path)
 
-for x in range(80):
-    i_create()
+
+rds = redisOperation.get_redis()
+index = 0
+
+
+def test_call(_data):
+    # print("handler process .... start")
+    # print(_data)
+    # time.sleep(random.randint(0,3))
+    # print("handler process .... end")
+    # global  rds
+    # room_incr = rds.incr("ROOM")
+    global index
+    index = index + 1
+    if index % 1000 == 0:
+        print(index)
+        print(datetime.datetime.now())
+    # print(index)
+    # if 8000 == room_incr:
+    #     print(datetime.datetime.now())
+    # if room_incr % 200 == 0:
+    #     for x in range(200):
+    #         # self, zk, biz_path, callback
+    #         t = threading.Thread(target=zkWatch, args=(zk, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
+    #         t.start()
+
+
+# zk.exists()
+print(datetime.datetime.now())
+
+gevent.joinall(
+    [
+        gevent.spawn(zkWatch, zk, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao") for x in range(8000)
+    ]
+)
+
+# for x in range(8000):
+#     # self, zk, biz_path, callback
+#     zkWatch(zk, "/".join([ROOT, ROOM_ID]),test_call,"wolegecao")
+#     # t = threading.Thread(target=zkWatch, args=(zk, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
+# t.start()
+# t.join()
+
+# i_create()
 
 while (True):
     time.sleep(1000)
@@ -119,5 +177,3 @@ while (True):
 #     print(zk.get_children(join(ROOT, ROOM_ID)))
 # else:
 #     zk.create(join(ROOT, ROOM_ID))
-
-
