@@ -1,15 +1,10 @@
 import datetime
-import random
 import threading
 import time
-from collections import namedtuple
 
-import select
 from kazoo.client import KazooClient
-from os.path import join
 
 from icode.redis.redis_operation_test import redisOperation
-from zk.zk_wrapper import zkWatch
 
 """
 创建子节点数
