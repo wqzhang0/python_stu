@@ -9,7 +9,9 @@ from kazoo.client import KazooClient
 
 """
 创建子节点数
-1142 count/s
+自己笔记本 i7 1142 count/s
+ecs 8核 21 个进程 cpu 60%
+8w/s
 """
 zk = KazooClient(hosts='127.0.0.1:2181')
 
@@ -34,9 +36,9 @@ print(datetime.datetime.now())
 count = 0
 _old = datetime.datetime.now()
 while (True):
-    zk.create(random_room() + "/", ephemeral=True, sequence=True,makepath=True)
-    count = count +1
+    zk.create(random_room() + "/", ephemeral=True, sequence=True, makepath=True)
+    count = count + 1
     if count % 8000 == 0:
         now = datetime.datetime.now()
-        print((now -_old).total_seconds())
+        print((now - _old).total_seconds())
         _old = now

@@ -6,10 +6,10 @@ import random
 """
 redis 测试工具
 """
-# r = redis.Redis(host='127.0.0.1', db=6, port=6379, decode_responses=True)
-r = redis.Redis(host='r-bp1198b2c13bc584.redis.rds.aliyuncs.com', db=int(4), password='Vm0DNbkIExz',
-                port=int(6379),
-                decode_responses=True)
+r = redis.Redis(host='127.0.0.1', db=6, port=6379, decode_responses=True)
+# r = redis.Redis(host='r-bp1198b2c13bc584.redis.rds.aliyuncs.com', db=int(4), password='Vm0DNbkIExz',
+#                 port=int(6379),
+#                 decode_responses=True)
 
 
 class redisOperation:
