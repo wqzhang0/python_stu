@@ -40,14 +40,9 @@ def test_call(_data):
     global count
     global old_date
     count = count + 1
-    if count % 200 == 0:
-        print(count)
-        now_date = datetime.datetime.now()
-        print((datetime.datetime.now() - old_date).total_seconds())
-        old_date = now_date
-        for i in range(200):
-            t = threading.Thread(target=run, args=())
-            t.start()
+    t =  Thread.currentThread()
+    print(__)
+
     rlock.release()
 
 
@@ -59,8 +54,8 @@ def run():
 count = 0
 
 rlock = threading.RLock()
-for i in range(600):
-    t = threading.Thread(target=run, args=())
+for i in range(2):
+    t = threading.Thread(target=run, args=(),name=i)
     t.start()
 while True:
     time.sleep(1)
