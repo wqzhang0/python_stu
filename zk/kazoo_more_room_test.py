@@ -8,9 +8,14 @@ from kazoo.client import KazooClient
 from zk.zk_wrapper import zkWatch
 
 """
+自己笔记本
 700  房间 400人 500count/s
 50   房间 400人 220count/s
+ecs 8核16G 
+cpu  60% 1200count /1s 5个进程  每个进程400-600 线程
+cpu  15% 500count /1s 1个进程  每个进程400-600 线程
 """
+
 zk = KazooClient(hosts='127.0.0.1:2181')
 
 ROOT = "/1"
