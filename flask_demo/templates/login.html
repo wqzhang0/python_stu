@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+{% if error %}
+ERROR:{{error}}
+
+
+{% endif %}
+
+{% extends "layout.html" %}
+{% block body %}
+  <h1>Overview</h1>
+  <p>Do you want to <a href="{{ url_for('login') }}">log in?</a>
+{% endblock %}
+
+<h1></h1>
+<form action="login" method="post">
+
+    <input type="text" name="username"/>
+    <input type="password" name="password"/>
+    <input type="submit">
+</form>
+
+</body>
+</html>
