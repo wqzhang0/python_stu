@@ -1,9 +1,10 @@
 from flask import Flask, url_for, render_template, request, redirect, get_flashed_messages, flash
 
+from flask_demo.form_valide.RegistrationForm import RegistrationForm
+
 app = Flask(__name__)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
 @app.route('/')
 def index():
     flash("You were successfully logged in")
@@ -54,7 +55,6 @@ def search_title():
 def prifile(username):
     return '{}\'s profile'.format(username)
 
-
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     return 'Post %s' % post_id
@@ -70,6 +70,16 @@ def show_subpath(subpath):
 def hello(name=None):
     return render_template("hello.html", name=name)
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        print(form.username.data)
+        print(form.email.data)
+        print(form.password.data)
+        flash('Thanks for registering')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 # with app.test_request_context():
 #     print(url_for('index'))
