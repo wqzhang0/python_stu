@@ -6,6 +6,7 @@ import time
 from kazoo.client import KazooClient
 
 # from icode.redis.redis_operation_test import redisOperation
+from kazoo.security import Permissions, OPEN_ACL_UNSAFE
 
 """
 创建子节点数
@@ -36,7 +37,8 @@ print(datetime.datetime.now())
 count = 0
 _old = datetime.datetime.now()
 while (True):
-    zk.create(random_room() + "/", ephemeral=True, sequence=True, makepath=True)
+    print(OPEN_ACL_UNSAFE)
+    zk.create(random_room() + "/", acl=OPEN_ACL_UNSAFE, ephemeral=True, sequence=True, makepath=True)
     count = count + 1
     if count % 8000 == 0:
         now = datetime.datetime.now()

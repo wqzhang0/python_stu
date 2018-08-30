@@ -1,5 +1,7 @@
 import asyncio
 from datetime import datetime
+import time
+
 
 @asyncio.coroutine
 def hello():
@@ -16,6 +18,7 @@ def hello():
 def hello2():
     print('Hello world', datetime.now())
     yield from asyncio.sleep(1)
+    yield  from time.sleep(1)
     print('Htllo again!', datetime.now())
 
 
