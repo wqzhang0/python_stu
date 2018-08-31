@@ -1,7 +1,7 @@
 from flask import url_for, flash, render_template
 
-from flask_demo.form_valide.RegistrationForm import RegistrationForm
-from flask_demo.hello import app
+from flask_demo.flaskr.form_valide.RegistrationForm import RegistrationForm
+from flask_demo.other.hello import app
 
 
 @app.route('/register/', method=['GET', 'POST'])
