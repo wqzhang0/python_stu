@@ -6,7 +6,7 @@ import helloworld_pb2 as helloworld__pb2
 
 class GreeterStub(object):
   # missing associated documentation comment in .proto file
-  pass
+
 
   def __init__(self, channel):
     """Constructor.
