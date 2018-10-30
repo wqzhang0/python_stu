@@ -46,24 +46,27 @@ class RoomServerStubProxy(object):
     server_class = RoomServerStub
     module_name = 'RoomServer'
 
+    def __init__(self) -> None:
+        super().__init__()
+
     @proxy_grpc_func(server_class, module_name)
-    def RandomJoinRoom(self, req):
+    def RandomJoinRoom(self, req,**kwargs):
         pass
 
     @proxy_grpc_func(server_class, module_name)
-    def JoinRoom(self, req):
+    def JoinRoom(self, req,**kwargs):
         pass
 
     @proxy_grpc_func(server_class, module_name)
-    def CreateRoom(self, req):
+    def CreateRoom(self, req,**kwargs):
         pass
 
     @proxy_grpc_func(server_class, module_name)
-    def RollOutRoom(self, req):
+    def RollOutRoom(self, req,**kwargs):
         pass
 
     @proxy_grpc_func(server_class, module_name)
-    def KicksPlayer(self, req):
+    def KicksPlayer(self, req,**kwargs):
         pass
 
 

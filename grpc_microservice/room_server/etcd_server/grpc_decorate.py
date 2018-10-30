@@ -74,7 +74,7 @@ def register_module(generic_handler):
     print("[register server end]")
 
 
-def choose_address(server_name):
+def choose_address(server_name,**kwargs):
     """
     选择所连接的服务地址 这里预留接口
     """
@@ -90,7 +90,7 @@ def proxy_grpc_func(stub, module_name):
         @wraps(func)
         def wrapper(*args, **kwargs):
             _func = func.__name__
-            _point, _token = choose_address('/{}/{}/'.format(_module_name, _func))
+            _point, _token = choose_address('/{}/{}/'.format(_module_name, _func),**kwargs)
             #
             header_adder_interceptor = header_manipulator_client_interceptor.server_access_interceptor(_token)
             with grpc.insecure_channel(_point) as channel:

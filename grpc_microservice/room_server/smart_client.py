@@ -38,7 +38,7 @@ def run():
 
     for i in range(1000):
         print(i)
-        response = RoomServerStubProxy().RandomJoinRoom(room_server_pb2.RandomJoinRoomRequest(player_id=1112, type=3))
+        response = RoomServerStubProxy().RandomJoinRoom(room_server_pb2.RandomJoinRoomRequest(player_id=1112, type=3),**{'debug':True})
 
         common_reply = response.common
         code = common_reply.code

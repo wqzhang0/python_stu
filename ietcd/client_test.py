@@ -1,4 +1,6 @@
 import asyncio
+import json
+import pprint
 
 import etcd3
 # import etcd_server
@@ -39,15 +41,34 @@ if __name__ == '__main__':
     #     time.sleep(1)
     #11秒过期
     _lease  = etcd.lease(2)
+    etcd.put('/GRPC/roomserver/123123','{}')
+    etcd.put('/GRPC/roomserver/123124','{}')
+    etcd.put('/GRPC/roomserver/123125','{}')
+    etcd.put('/GRPC/roomserver/123126','{}')
+    childrens = etcd.get_prefix('/GRPC')
+    server = {}
+    for value,_meta in childrens:
+        _v = value.decode("utf-8")
+        _path = _meta.key.decode("utf-8").replace('/GRPC', '').split('/')
+
+        _module = _path[1]
+        _server_name = _path[2]
+        server['/{}/{}'.format(_module,_server_name)] = [ json.loads(_v,encoding='utf-8')]
+        print('{} : {}  {}'.format(_v,_module,_server_name))
+
+
+    pprint.pprint(server)
+
+
+
 
 
     # print('#2秒过期')
     # ietcd.put('/GRPC/roomserver/123123','',_lease)
 
-    _lease.refresh()
-    time.sleep(3)
+    # _lease.refresh()
+    # time.sleep(3)
 
-    print(_lease.remaining_ttl)
     # etcd_server.refresh_lease(_lease.id)
     # fresh(_lease)
     # for x in range(100000):
