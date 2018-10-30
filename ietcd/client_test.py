@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     etcd = etcd3.client()
     # while True:
-    #     _status = etcd.status()
+    #     _status = ietcd.status()
     #     print(_status)
     #     time.sleep(1)
     #11秒过期
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
 
     # print('#2秒过期')
-    # etcd.put('/GRPC/roomserver/123123','',_lease)
+    # ietcd.put('/GRPC/roomserver/123123','',_lease)
 
     _lease.refresh()
     time.sleep(3)

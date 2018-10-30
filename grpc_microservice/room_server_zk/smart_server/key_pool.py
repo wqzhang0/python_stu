@@ -1,5 +1,0 @@
-SERVER_UUIDS = {}
-
-
-SERVER_POOL = {}
-
