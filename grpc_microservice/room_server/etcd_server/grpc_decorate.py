@@ -78,8 +78,8 @@ def choose_address(server_name,**kwargs):
     """
     选择所连接的服务地址 这里预留接口
     """
-    # return ServerInspecte().choice_grpc_server(server_name)
-    return '127.0.0.1:50002' ,'token'
+    return ServerInspecte().choice_grpc_server(server_name,**kwargs)
+    # return '127.0.0.1:50002' ,'token'
 
 
 def proxy_grpc_func(stub, module_name):

@@ -1,8 +1,9 @@
-import datetime
+import json
 import json
 import logging
-
 import sys
+
+import etcd3
 
 from grpc_microservice.room_server.etcd_server.ietcd.etcd_client import EtcdClient
 from grpc_microservice.room_server.etcd_server.load_balance import ProcssBalanceStrategy, FinalBalanceStrategy, \
@@ -34,6 +35,12 @@ class ServerInspecte(metaclass=Singleton):
         self.provide_server = None
         self.logger = logger or log
         self.ROOT = '/GRPC'
+        self.etcd_client = etcd3.client()
+        self.env = 'production' # debug
+
+    def get_etcd_client(self):
+        """这里加异常捕捉 防止本服务不可以用"""
+        return self.etcd_client
 
     def set_balance_strategy(self, balance_strategy):
         if balance_strategy == "ProcssBalanceStrategy":
@@ -54,6 +61,7 @@ class ServerInspecte(metaclass=Singleton):
         """开始服务调用接口"""
         self.read_servers()
         self.logger.info("etcd_server 注册中心启动成功")
+
     #
     # def read_state(self):
     #     for node_name in ServerContent.get_list().keys():
@@ -65,14 +73,35 @@ class ServerInspecte(metaclass=Singleton):
 
     def read_servers(self):
         """获取服务列表"""
-        EtcdClient().get_etcd_client().get_prefix(self.ROOT)
-        node_list = EtcdClient().get_etcd_client().get_children("/".join([self.BIZ_PATH, self.WEBSOCKET]),
-                                                                watch=self.server_change_listener)
 
-        tmp_server_list = {}
-        for node_name in node_list:
-            tmp_server_list[node_name] = None
-        ServerContent.SERVER_LIST = tmp_server_list
+        server = {}
+        childrens = self.get_etcd_client().get_prefix('/GRPC')
+        for value, _meta in childrens:
+            _v = value.decode("utf-8")
+            _path = _meta.key.decode("utf-8").replace('/GRPC', '').split('/')
+
+            _module = _path[1]
+            _server_name = _path[2]
+            server['/{}/{}'.format(_module, _server_name)] = [json.loads(_v, encoding='utf-8')]
+            print('{} : {}  {}'.format(_v, _module, _server_name))
+        
+        #整合服务
+        # 生产强制 调用生产环境的，除非有 被强制调用的服务
+
+        #'/roomserver/123123': [{}],
+         # '/roomserver/123124': [{}],
+         # '/roomserver/123125': [{}],
+         # '/roomserver/123126': [{}]
+
+
+        self.get_etcd_client().get_prefix(self.ROOT)
+        # node_list = EtcdClient().get_etcd_client().get_children("/".join([self.BIZ_PATH, self.WEBSOCKET]),
+        #                                                         watch=self.server_change_listener)
+        #
+        # tmp_server_list = {}
+        # for node_name in node_list:
+        #     tmp_server_list[node_name] = None
+        # ServerContent.SERVER_LIST = tmp_server_list
         self.read_state()
 
     def server_change_listener(self, event):
@@ -82,7 +111,7 @@ class ServerInspecte(metaclass=Singleton):
         self.read_servers()
         self.server_transfer()
 
-    def choice_grpc_server(self, server_name):
+    def choice_grpc_server(self, server_name, **kwargs):
         server_name = self.ROOT + server_name
         _children = EtcdClient().get_etcd_client().get_children(server_name)
         server_node = None
@@ -141,6 +170,7 @@ class ServerInspecte(metaclass=Singleton):
             granted_ttl = self._lease.granted_ttl
             if remaining_ttl == -1:
                 raise Exception("lease invalid")
+
 
 if __name__ == '__main__':
     server_inspecte = ServerInspecte(balance_strategy="ProcssBalanceStrategy")

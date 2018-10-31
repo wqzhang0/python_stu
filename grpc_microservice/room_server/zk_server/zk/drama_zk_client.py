@@ -26,6 +26,8 @@ class IKazooClient(metaclass=Singleton):
                 if self.zk_client.state in [ KeeperState.CLOSED ,  KeeperState.AUTH_FAILED ,KazooState.LOST]:
                     print("ERROR : zookeeper  尝试重连")
                     self.zk_client.restart()
+                    # 重新注册服务
+                    # re_register()
                 time.sleep(1)
             except Exception:
                 print(self.zk_client)
