@@ -83,7 +83,7 @@ class ServerInspecte(metaclass=Singleton):
         """开始服务调用接口"""
         self.read_servers()
         self.create_master_node()
-        print("etcd_server 注册中心启动成功")
+        print("etcd_minoter 注册中心启动成功")
 
 
     def read_state(self):

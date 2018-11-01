@@ -2,7 +2,8 @@
 import grpc
 
 import grpc_microservice.room_proto.room_server_pb2 as room__server__pb2
-from grpc_microservice.room_server.etcd_server.grpc_decorate import proxy_grpc_func, register_module
+from grpc_microservice.room_server.etcd_minoter.client.client_discovery import proxy_grpc_func
+from grpc_microservice.room_server.etcd_minoter.server.server_register import  register_module
 
 
 class RoomServerStub(object):

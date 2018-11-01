@@ -6,5 +6,5 @@ if __name__ == '__main__':
     for event in events_iterator:
         print(event)
 
-    # etcd_server.watch()
-    # etcd_server.put('foo')
+    # etcd_minoter.watch()
+    # etcd_minoter.put('foo')

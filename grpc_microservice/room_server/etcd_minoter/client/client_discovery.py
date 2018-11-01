@@ -1,30 +1,51 @@
 import json
-import json
-import logging
-import sys
+from functools import wraps
 
-import etcd3
+import grpc
 
-from grpc_microservice.room_server.etcd_server.ietcd.etcd_client import EtcdClient
-from grpc_microservice.room_server.etcd_server.load_balance import ProcssBalanceStrategy, FinalBalanceStrategy, \
+from grpc_microservice.room_server.etcd_minoter.client.load_balance import ProcssBalanceStrategy, FinalBalanceStrategy, \
     BalanceStrategy
-from grpc_microservice.room_server.etcd_server.zk_server_content import ServerContent
+from grpc_microservice.room_server.etcd_minoter.server.etcd_manager import EtcdServer
+from grpc_microservice.room_server.etcd_minoter.zk_server_content import ServerContent
 from grpc_microservice.room_server.meta_cls import Singleton
-
-"""
-基于etcd的服务监听
-"""
-# log = logging.getLogger(__name__)
-
-log = logging.basicConfig(
-    level=logging.DEBUG
-    , stream=sys.stdout
-    , format='%(asctime)s %(pathname)s %(funcName)s%(lineno)d %(levelname)s: %(message)s')
+from grpc_microservice.smart_client import header_manipulator_client_interceptor
 
 
-class ServerInspecte(metaclass=Singleton):
+def choose_address(server_name, **kwargs):
+    """
+    选择所连接的服务地址 这里预留接口
+    """
+    return ServerInspecte().choice_grpc_server(server_name, **kwargs)
+    # return '127.0.0.1:50002' ,'token'
+
+
+def proxy_grpc_func(stub, module_name):
+    _stub = stub
+    _module_name = module_name
+
+    def decorate(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            _func = func.__name__
+            _point, _token = choose_address('/{}/{}/'.format(_module_name, _func), **kwargs)
+            #
+            header_adder_interceptor = header_manipulator_client_interceptor.server_access_interceptor(_token)
+            with grpc.insecure_channel(_point) as channel:
+                intercept_channel = grpc.intercept_channel(channel, header_adder_interceptor)
+                __stub = _stub(intercept_channel)
+                _func_stub = getattr(__stub, _func)
+                ret = _func_stub(args[1])
+                return ret
+
+        return wrapper
+
+    return decorate
+
+
+class ServerInspecte(EtcdServer, metaclass=Singleton):
 
     def __init__(self, balance_strategy=None, logger=None):
+        super().__init__(logger)
         if balance_strategy == "ProcssBalanceStrategy":
             self.balance_strategy_cls = ProcssBalanceStrategy()
         elif balance_strategy == "FinalBalanceStrategy":
@@ -33,10 +54,8 @@ class ServerInspecte(metaclass=Singleton):
             self.balance_strategy = BalanceStrategy()
         self._lease = None
         self.provide_server = None
-        self.logger = logger or log
-        self.ROOT = '/GRPC'
-        self.etcd_client = etcd3.client()
-        self.env = 'production' # debug
+        self.logger = logger or None
+        self.env = 'production'  # debug
 
     def get_etcd_client(self):
         """这里加异常捕捉 防止本服务不可以用"""
@@ -59,8 +78,9 @@ class ServerInspecte(metaclass=Singleton):
 
     def start(self):
         """开始服务调用接口"""
+
         self.read_servers()
-        self.logger.info("etcd_server 注册中心启动成功")
+        self.logger.info("etcd_minoter 注册中心启动成功")
 
     #
     # def read_state(self):
@@ -73,6 +93,7 @@ class ServerInspecte(metaclass=Singleton):
 
     def read_servers(self):
         """获取服务列表"""
+        # events_iterator, cancel = etcd.watch_prefix('/GRPC/roomserver')
 
         server = {}
         childrens = self.get_etcd_client().get_prefix('/GRPC')
@@ -84,15 +105,14 @@ class ServerInspecte(metaclass=Singleton):
             _server_name = _path[2]
             server['/{}/{}'.format(_module, _server_name)] = [json.loads(_v, encoding='utf-8')]
             print('{} : {}  {}'.format(_v, _module, _server_name))
-        
-        #整合服务
+
+        # 整合服务
         # 生产强制 调用生产环境的，除非有 被强制调用的服务
 
-        #'/roomserver/123123': [{}],
-         # '/roomserver/123124': [{}],
-         # '/roomserver/123125': [{}],
-         # '/roomserver/123126': [{}]
-
+        # '/roomserver/123123': [{}],
+        # '/roomserver/123124': [{}],
+        # '/roomserver/123125': [{}],
+        # '/roomserver/123126': [{}]
 
         self.get_etcd_client().get_prefix(self.ROOT)
         # node_list = EtcdClient().get_etcd_client().get_children("/".join([self.BIZ_PATH, self.WEBSOCKET]),
@@ -106,21 +126,21 @@ class ServerInspecte(metaclass=Singleton):
 
     def server_change_listener(self, event):
         # 服务检测  服务注册,节点状态存在延迟
-        EtcdClient().get_etcd_client().get_children("/".join([self.BIZ_PATH, self.WEBSOCKET]),
-                                                    watch=self.server_change_listener)
+        # EtcdClient().get_etcd_client().get_children("/".join([self.BIZ_PATH, self.WEBSOCKET]),
+        #                                             watch=self.server_change_listener)
         self.read_servers()
         self.server_transfer()
 
     def choice_grpc_server(self, server_name, **kwargs):
-        server_name = self.ROOT + server_name
-        _children = EtcdClient().get_etcd_client().get_children(server_name)
+        # server_name = self.ROOT + server_name
+        # _children = EtcdClient().get_etcd_client().get_children(server_name)
         server_node = None
-        for i in _children:
-            v = EtcdClient().get_etcd_client().get("/".join([server_name, i]))
-            server_node = json.loads(str(v[0], encoding='utf-8'))
-            break
-        if server_node is None:
-            raise Exception("没有可用的服务")
+        # for i in _children:
+        #     v = EtcdClient().get_etcd_client().get("/".join([server_name, i]))
+        #     server_node = json.loads(str(v[0], encoding='utf-8'))
+        #     break
+        # if server_node is None:
+        #     raise Exception("没有可用的服务")
         return ":".join([server_node['ip'], server_node['port']]), server_node['uuid']
 
     def register_server(self):
@@ -129,11 +149,10 @@ class ServerInspecte(metaclass=Singleton):
         """
         if (not self.provide_server) or (not isinstance(self.provide_server, dict)):
             raise Exception('没有服务可以进行注册，请检查')
-        etcd_client = EtcdClient().get_etcd_client()
-        self._lease = etcd_client.lease(10)
+        self._lease = self.etcd_client.lease(10)
         for k, v in self.provide_server.items():
-            etcd_client.put('/{}{}/{}'.format(self.ROOT, k, v['uuid']), json.dumps(v, ensure_ascii=False),
-                            self._lease)
+            self.etcd_client.put('/{}{}/{}'.format(self.ROOT, k, v['uuid']), json.dumps(v, ensure_ascii=False),
+                                 self._lease)
 
     def add_provide_server(self, _server):
         """
@@ -149,8 +168,7 @@ class ServerInspecte(metaclass=Singleton):
         重新注册服务  用于etcd断开重连
         :return:
         """
-        etcd_client = EtcdClient().get_etcd_client()
-        self._lease = etcd_client.lease(10)
+        self._lease = self.etcd_client.lease(10)
         self.register_server()
 
     def fresh_lease(self):
@@ -164,7 +182,7 @@ class ServerInspecte(metaclass=Singleton):
         检查lease 是否活跃
         """
         if self._lease is None:
-            self._lease = EtcdClient().get_etcd_client().lease(11)
+            self._lease = self.etcd_client.lease(11)
         else:
             remaining_ttl = self._lease.remaining_ttl
             granted_ttl = self._lease.granted_ttl

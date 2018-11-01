@@ -1,12 +1,9 @@
+import time
 import uuid
 from functools import wraps
 
-import grpc
-import time
-
-from grpc_microservice.room_server.etcd_server.service_inspection import ServerInspecte
+from grpc_microservice.room_server.etcd_minoter.server.etcd_manager import ServerInspecte
 from grpc_microservice.room_server.smart_server.key_pool import SERVER_POOL, SERVER_UUIDS
-from grpc_microservice.smart_client import header_manipulator_client_interceptor
 
 
 def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
@@ -31,6 +28,7 @@ def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
                                          'port': '50002',
                                          }
         SERVER_UUIDS[_api] = token
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             start = time.time()
@@ -72,34 +70,3 @@ def register_module(generic_handler):
     ServerInspecte().add_provide_server(check_servers)
     ServerInspecte().register_server()
     print("[register server end]")
-
-
-def choose_address(server_name,**kwargs):
-    """
-    选择所连接的服务地址 这里预留接口
-    """
-    return ServerInspecte().choice_grpc_server(server_name,**kwargs)
-    # return '127.0.0.1:50002' ,'token'
-
-
-def proxy_grpc_func(stub, module_name):
-    _stub = stub
-    _module_name = module_name
-
-    def decorate(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            _func = func.__name__
-            _point, _token = choose_address('/{}/{}/'.format(_module_name, _func),**kwargs)
-            #
-            header_adder_interceptor = header_manipulator_client_interceptor.server_access_interceptor(_token)
-            with grpc.insecure_channel(_point) as channel:
-                intercept_channel = grpc.intercept_channel(channel, header_adder_interceptor)
-                __stub = _stub(intercept_channel)
-                _func_stub = getattr(__stub, _func)
-                ret = _func_stub(args[1])
-                return ret
-
-        return wrapper
-
-    return decorate

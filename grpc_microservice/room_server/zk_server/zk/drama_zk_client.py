@@ -5,7 +5,7 @@ from kazoo.protocol.states import KeeperState, KazooState
 from grpc_microservice.room_server.meta_cls import Singleton
 ZK_PATH = '127.0.0.1:2181'
 """
-etcd_server 客户端集成类
+etcd_minoter 客户端集成类
 """
 class IKazooClient(metaclass=Singleton):
 

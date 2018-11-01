@@ -63,7 +63,7 @@ def w2(room_path, path):
 def watch_pre_node(room_path, self_path, path, state, type):
     # 被唤醒，查看是否最小，最小执行，否则继续监听比自己小的
     check_or_process(self_path)
-    # node_list = etcd_server.get_children(room_path)
+    # node_list = etcd_minoter.get_children(room_path)
     # sort_list = []
     # for node_child in node_list:
     #     sort_list.append("/".join([ROOT, ROOM_ID, node_child]))
@@ -76,7 +76,7 @@ def watch_pre_node(room_path, self_path, path, state, type):
     #     print("获得锁:%s" % self_path)
     # else:
     #     print("监听自己上一位node :%s" % sort_list[-2])
-    #     etcd_server.exists(sort_list[-2], watch=w2(room_path, self_path)(watch_pre_node))
+    #     etcd_minoter.exists(sort_list[-2], watch=w2(room_path, self_path)(watch_pre_node))
 
 
 def check_or_process(tmp_node):
@@ -116,7 +116,7 @@ def i_create():
     # 创建临时
     tmp_node = zk.create("/".join([ROOT, ROOM_ID, ""]), sequence=True, ephemeral=True)
     check_or_process(tmp_node)
-    # node_list = etcd_server.get_children("/".join([ROOT, ROOM_ID]), watch=get_children_watch)
+    # node_list = etcd_minoter.get_children("/".join([ROOT, ROOM_ID]), watch=get_children_watch)
 
 
 def getLockCallback(path):
@@ -147,12 +147,12 @@ def test_call(_data):
     #     print(datetime.datetime.now())
     # if room_incr % 200 == 0:
     #     for x in range(200):
-    #         # self, etcd_server, biz_path, callback
-    #         t = threading.Thread(target=zkWatch, args=(etcd_server, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
+    #         # self, etcd_minoter, biz_path, callback
+    #         t = threading.Thread(target=zkWatch, args=(etcd_minoter, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
     #         t.start()
 
 
-# etcd_server.exists()
+# etcd_minoter.exists()
 print(datetime.datetime.now())
 
 gevent.joinall(
@@ -162,9 +162,9 @@ gevent.joinall(
 )
 
 # for x in range(8000):
-#     # self, etcd_server, biz_path, callback
-#     zkWatch(etcd_server, "/".join([ROOT, ROOM_ID]),test_call,"wolegecao")
-#     # t = threading.Thread(target=zkWatch, args=(etcd_server, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
+#     # self, etcd_minoter, biz_path, callback
+#     zkWatch(etcd_minoter, "/".join([ROOT, ROOM_ID]),test_call,"wolegecao")
+#     # t = threading.Thread(target=zkWatch, args=(etcd_minoter, "/".join([ROOT, ROOM_ID]), test_call, "wolegecao"), name="")
 # t.start()
 # t.join()
 
@@ -172,8 +172,8 @@ gevent.joinall(
 
 while (True):
     time.sleep(1000)
-# etcd_server.create(join(ROOT, ROOM_ID))
-# if etcd_server.exists(join(ROOT, ROOM_ID)):
-#     print(etcd_server.get_children(join(ROOT, ROOM_ID)))
+# etcd_minoter.create(join(ROOT, ROOM_ID))
+# if etcd_minoter.exists(join(ROOT, ROOM_ID)):
+#     print(etcd_minoter.get_children(join(ROOT, ROOM_ID)))
 # else:
-#     etcd_server.create(join(ROOT, ROOM_ID))
+#     etcd_minoter.create(join(ROOT, ROOM_ID))

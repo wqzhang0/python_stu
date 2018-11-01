@@ -3,7 +3,7 @@ import json
 import pprint
 
 import etcd3
-# import etcd_server
+# import etcd_minoter
 import time
 
 
@@ -19,7 +19,7 @@ def fib(max):
 # async def fresh(_lease):
 #     print("Hello world!")
 #     # _lease.refresh()
-#     yield from etcd_server.refresh_lease(_lease.id)
+#     yield from etcd_minoter.refresh_lease(_lease.id)
 #     await asyncio.sleep(1)
 #     print("Hello again!")
 
@@ -31,7 +31,7 @@ def testY():
         yield z
 
 if __name__ == '__main__':
-    # client = etcd_server.Client()
+    # client = etcd_minoter.Client()
 
 
     etcd = etcd3.client()
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # _lease.refresh()
     # time.sleep(3)
 
-    # etcd_server.refresh_lease(_lease.id)
+    # etcd_minoter.refresh_lease(_lease.id)
     # fresh(_lease)
     # for x in range(100000):
     #     print('fresh lease')

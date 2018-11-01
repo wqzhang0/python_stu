@@ -39,7 +39,7 @@ _old = datetime.datetime.now()
 
 _server_root = '/grpc'
 
-# etcd_server = IKazooClient().get_kazoo_client()
+# etcd_minoter = IKazooClient().get_kazoo_client()
 server_name= 'room_server'
 point  = 'RandomJoinRoom/'
 doc= {"a":"b","c":"我的天呢"}
@@ -48,7 +48,7 @@ zk.create('/'.join([_server_root, server_name, point]), value=bytes((json.dumps(
 
 
 # while (True):
-    # etcd_server.create(random_room() + "/", ephemeral=True, sequence=True, makepath=True)
+    # etcd_minoter.create(random_room() + "/", ephemeral=True, sequence=True, makepath=True)
     # count = count + 1
     # if count % 8000 == 0:
     #     now = datetime.datetime.now()

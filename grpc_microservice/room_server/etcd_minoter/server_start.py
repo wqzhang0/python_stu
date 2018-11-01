@@ -1,12 +1,14 @@
+import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
 
 import grpc
+import sys
 
 from grpc_microservice.room_proto.room_server_pb2 import JoinRoomReply
 from grpc_microservice.room_proto import room_server_pb2_grpc
-from grpc_microservice.room_server.etcd_server.grpc_decorate import server_monitor
-from grpc_microservice.room_server.etcd_server.service_inspection import ServerInspecte
+from grpc_microservice.room_server.etcd_minoter.server.etcd_manager import ServerInspecte
+from grpc_microservice.room_server.etcd_minoter.server.server_register import server_monitor
 from grpc_microservice.room_server.smart_server.request_header_validator_interceptor import \
     RequestHeaderValidatorInterceptor
 
@@ -45,8 +47,15 @@ class RoomServer(room_server_pb2_grpc.RoomServerServicer):
 
 
 def serve(ip, port):
-    # server_inspecte = ServerInspecte(balance_strategy="ProcssBalanceStrategy")
-    # server_inspecte.start()
+    # log = logging.getLogger(__name__)
+
+    log = logging.basicConfig(
+        level=logging.DEBUG
+        , stream=sys.stdout
+        , format='%(asctime)s %(pathname)s %(funcName)s%(lineno)d %(levelname)s: %(message)s')
+
+    server_inspecte = ServerInspecte(log)
+    server_inspecte.start()
 
     header_validator = RequestHeaderValidatorInterceptor(
         'server-uuid', grpc.StatusCode.UNAUTHENTICATED,
