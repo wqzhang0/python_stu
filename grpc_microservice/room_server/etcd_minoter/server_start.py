@@ -7,8 +7,7 @@ import sys
 
 from grpc_microservice.room_proto.room_server_pb2 import JoinRoomReply
 from grpc_microservice.room_proto import room_server_pb2_grpc
-from grpc_microservice.room_server.etcd_minoter.server.etcd_manager import ServerInspecte
-from grpc_microservice.room_server.etcd_minoter.server.server_register import server_monitor
+from grpc_microservice.room_server.etcd_minoter.server.server_register import server_monitor, ServerInspecte
 from grpc_microservice.room_server.smart_server.request_header_validator_interceptor import \
     RequestHeaderValidatorInterceptor
 

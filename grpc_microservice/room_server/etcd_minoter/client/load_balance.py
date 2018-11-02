@@ -5,9 +5,9 @@ class BalanceStrategy():
     """负载均衡策略"""
 
     @classmethod
-    def choice(self, server_list):
+    def choice(self, server_list,**kwargs):
         # 随便获取一个节点做匹配
-        node = random.choice(list(server_list.keys()))
+        node = random.choice(server_list)
         if node is None:
             return BalanceStrategy.choice(server_list)
         else:
