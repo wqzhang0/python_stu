@@ -3,11 +3,11 @@ from concurrent.futures import ThreadPoolExecutor
 
 import grpc
 
-from microservice_invoke.room_proto import JoinRoomReply, room_server_pb2_grpc
-from grpc_microservice.server.etcd_minoter.server.server_register import server_monitor
-from grpc_microservice.server.common.server.request_header_validator_interceptor import \
-    RequestHeaderValidatorInterceptor
-from grpc_microservice.server.zk_minoter.service_inspection import ServerInspecte
+from grpc_microservice.common.server.request_header_validator_interceptor import RequestHeaderValidatorInterceptor
+from grpc_microservice.example.reg_zk.room_proto import room_server_pb2_grpc
+from grpc_microservice.example.reg_zk.room_proto.room_server_pb2 import JoinRoomReply
+from grpc_microservice.zk_minoter.grpc_decorate import server_monitor
+from grpc_microservice.zk_minoter.service_inspection import ServerInspecte
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
