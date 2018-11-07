@@ -1,6 +1,6 @@
 from grpc_microservice.etcd_minoter.client.client_discovery import ServerDiscovery
-from microservice_invoke.room_proto import room_server_pb2
-from microservice_invoke.room_proto.room_server_pb2_grpc import RoomServerStubProxy
+from grpc_microservice.example.reg_etcdv3.room_proto import room_server_pb2
+from grpc_microservice.example.reg_etcdv3.room_proto.room_server_pb2_grpc import RoomServerStubProxy
 
 """
 1000次api调用  2196.0017681121826 ms

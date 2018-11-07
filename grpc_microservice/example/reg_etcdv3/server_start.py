@@ -6,8 +6,8 @@ import grpc
 from grpc_microservice.common.server.request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 from grpc_microservice.etcd_minoter.server import sys_util
 from grpc_microservice.etcd_minoter.server.server_register import server_monitor, ServerInspecte
-from microservice_invoke.room_proto import  room_server_pb2_grpc
-from microservice_invoke.room_proto.room_server_pb2 import JoinRoomReply
+from grpc_microservice.example.reg_etcdv3.room_proto import room_server_pb2_grpc
+from grpc_microservice.example.reg_etcdv3.room_proto.room_server_pb2 import JoinRoomReply
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
