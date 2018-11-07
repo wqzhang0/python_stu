@@ -18,7 +18,7 @@ import json
 
 import grpc
 
-from grpc_microservice.smart_client import generic_client_interceptor
+from grpc_microservice.client_interceptor import generic_client_interceptor
 
 
 class _ClientCallDetails(

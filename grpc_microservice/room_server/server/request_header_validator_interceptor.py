@@ -16,7 +16,7 @@ import base64
 
 import grpc
 
-from grpc_microservice.room_server.smart_server.key_pool import SERVER_UUIDS
+from grpc_microservice.room_server.server.key_pool import SERVER_UUIDS
 
 
 def _unary_unary_rpc_terminator(code, details):

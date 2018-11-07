@@ -9,7 +9,7 @@ from etcd3.exceptions import Etcd3Exception
 
 from grpc_microservice.room_server.etcd_minoter.etcd_manager import  EtcdServer
 from grpc_microservice.room_server.meta_cls import Singleton
-from grpc_microservice.room_server.smart_server.key_pool import SERVER_POOL, SERVER_UUIDS
+from grpc_microservice.room_server.server.key_pool import SERVER_POOL, SERVER_UUIDS
 
 
 def server_monitor(server_name, force=False, dec="", weight=100, offline=False,port=''):

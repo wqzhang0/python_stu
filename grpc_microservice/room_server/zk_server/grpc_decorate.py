@@ -4,7 +4,7 @@ from functools import wraps
 import grpc
 import time
 
-from grpc_microservice.room_server.smart_server.key_pool import SERVER_POOL, SERVER_UUIDS
+from grpc_microservice.room_server.server.key_pool import SERVER_POOL, SERVER_UUIDS
 
 
 def server_monitor(server_name, force=False, dec="", weight=100, offline=False):

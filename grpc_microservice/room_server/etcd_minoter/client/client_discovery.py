@@ -12,7 +12,7 @@ from grpc_microservice.room_server.etcd_minoter.client.load_balance import Procs
 from grpc_microservice.room_server.etcd_minoter.etcd_manager import EtcdServer
 from grpc_microservice.room_server.etcd_minoter.zk_server_content import ServerContent
 from grpc_microservice.room_server.meta_cls import Singleton
-from grpc_microservice.smart_client import header_manipulator_client_interceptor
+from grpc_microservice.client_interceptor import header_manipulator_client_interceptor
 
 
 def choose_address(server_name, **kwargs):
