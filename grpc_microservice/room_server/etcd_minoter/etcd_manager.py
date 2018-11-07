@@ -20,7 +20,10 @@ class EtcdServer(metaclass=Singleton):
     def __init__(self, logger=None):
         self.logger = logger or self.log
         self.ROOT = '/GRPC'
-        self.etcd_client = etcd3.client()
+        # self.etcd_client = etcd3.client(host='127.0.0.1', port=2379)
+        self.etcd_client = etcd3.client(host='192.168.0.105', port=2379)
+        # self.etcd_client = etcd3.client(host='wqzhangHost', port=2379)
+        # self.etcd_client = etcd3.client()
 
 
 

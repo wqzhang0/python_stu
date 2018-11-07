@@ -12,7 +12,7 @@ from grpc_microservice.room_server.meta_cls import Singleton
 from grpc_microservice.room_server.smart_server.key_pool import SERVER_POOL, SERVER_UUIDS
 
 
-def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
+def server_monitor(server_name, force=False, dec="", weight=100, offline=False,port=''):
     """
     初始化服务名称,并且在被调用时监听
     """
@@ -30,8 +30,8 @@ def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
                                          'weight': weight,
                                          'offline': offline,
                                          'uuid': token,
-                                         'ip': '127.0.0.1',
-                                         'port': '50002',
+                                         'ip': '',
+                                         'port': port,
                                          'pro': True,
                                          }
         SERVER_UUIDS[_api] = token
@@ -75,7 +75,6 @@ def register_module(generic_handler):
 
     print("[register server start")
     ServerInspecte().add_provide_server(check_servers)
-    ServerInspecte().register_server()
     print("[register server end]")
 
 
@@ -96,9 +95,10 @@ class ServerInspecte(EtcdServer, metaclass=Singleton):
         self.logger = logger or self.log
         self.env = env  # debug
 
-    def start(self):
+    def start(self,ip,port):
         """开始服务调用接口"""
         self.logger.info("etcd_minoter 注册中心启动成功")
+        self.update_port(ip,port)
         self.register_server()
 
         t = threading.Thread(target=self.loop, name='LoopThread')
@@ -123,6 +123,7 @@ class ServerInspecte(EtcdServer, metaclass=Singleton):
         """
         注册服务
         """
+
         self._lease = self.etcd_client.lease(10)
         if (not self.provide_server) or (not isinstance(self.provide_server, dict)):
             self.logger.info('没有服务可以进行注册，请检查。如果是初始化阶段请忽略')
@@ -130,6 +131,12 @@ class ServerInspecte(EtcdServer, metaclass=Singleton):
             for k, v in self.provide_server.items():
                 self.etcd_client.put('{}{}/{}'.format(self.ROOT, k, v['uuid']), json.dumps(v, ensure_ascii=False),
                                      self._lease)
+    def update_port(self,ip,port):
+        #设置服務端口號
+        _dict = self.provide_server
+        for k in _dict.keys():
+            self.provide_server[k]['ip'] = ip
+            self.provide_server[k]['port'] = port
 
     def add_provide_server(self, _server):
         """
@@ -145,8 +152,6 @@ class ServerInspecte(EtcdServer, metaclass=Singleton):
         if self._lease is None:
             raise LeaseInvide("无lease")
         else:
-            print(self._lease.remaining_ttl)
-
             self._lease.refresh()
             self.logger.info('刷新节点')
 
@@ -156,3 +161,4 @@ class ServerInspecte(EtcdServer, metaclass=Singleton):
                 raise LeaseInvide("lease invalid")
 
             return granted_ttl, remaining_ttl
+

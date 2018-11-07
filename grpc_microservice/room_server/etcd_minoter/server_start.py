@@ -7,6 +7,7 @@ import sys
 
 from grpc_microservice.room_proto.room_server_pb2 import JoinRoomReply
 from grpc_microservice.room_proto import room_server_pb2_grpc
+from grpc_microservice.room_server.etcd_minoter.server import sys_util
 from grpc_microservice.room_server.etcd_minoter.server.server_register import server_monitor, ServerInspecte
 from grpc_microservice.room_server.smart_server.request_header_validator_interceptor import \
     RequestHeaderValidatorInterceptor
@@ -48,22 +49,26 @@ class RoomServer(room_server_pb2_grpc.RoomServerServicer):
 def serve(ip, port):
     # log = logging.getLogger(__name__)
 
-    log = logging.basicConfig(
-        level=logging.DEBUG
-        , stream=sys.stdout
-        , format='%(asctime)s %(pathname)s %(funcName)s%(lineno)d %(levelname)s: %(message)s')
 
-    server_inspecte = ServerInspecte(log)
-    server_inspecte.start()
+    # log = logging.basicConfig(
+    #     level=logging.DEBUG
+    #     , stream=sys.stdout
+    #     , format='%(asctime)s %(pathname)s %(funcName)s%(lineno)d %(levelname)s: %(message)s')
+
+    # server_inspecte = ServerInspecte(log)
+    server_inspecte = ServerInspecte()
 
     header_validator = RequestHeaderValidatorInterceptor(
         'server-uuid', grpc.StatusCode.UNAUTHENTICATED,
-        'Access denied!,please connect from zookeeper register')
+        'Access denied!,please connect from etcd register')
 
     server = grpc.server(ThreadPoolExecutor(max_workers=10), interceptors=(header_validator,))
     room_server_pb2_grpc.add_RoomServerServicer_to_server(RoomServer(), server)
     server.add_insecure_port(":".join([ip, port]))
     server.start()
+    server_inspecte.start(ip,port)
+
+    # ServerInspecte().register_server(init=True)
     print("启动成功")
 
     # 这里进行注册
@@ -75,4 +80,5 @@ def serve(ip, port):
 
 
 if __name__ == '__main__':
-    serve('127.0.0.1', '8080')
+
+    serve(sys_util.getIP(),sys_util.get_free_port())

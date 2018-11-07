@@ -31,7 +31,7 @@ def proxy_grpc_func(stub, module_name):
         @wraps(func)
         def wrapper(*args, **kwargs):
             _func = func.__name__
-            _point, _token = choose_address('/{}/{}/'.format(_module_name, _func), **kwargs)
+            _point, _token = choose_address('/{}/{}'.format(_module_name, _func), **kwargs)
             #
             header_adder_interceptor = header_manipulator_client_interceptor.server_access_interceptor(_token)
             with grpc.insecure_channel(_point) as channel:
@@ -112,10 +112,10 @@ class ServerDiscovery(EtcdServer, metaclass=Singleton):
             self.__normal_server[_uuid] = _normal_server
 
     def filter_foce(self, server_name):
-        server_pool = self.__force_server.get(server_name)
+        server_pool = self.__force_server.get(server_name,None)
         if server_pool and len(server_pool) > 0:
             return server_pool
-        server_pool = self.__normal_server.get(server_name)
+        server_pool = self.__normal_server.get(server_name,None)
         if server_pool and len(server_pool) > 0:
             return server_pool
         raise Exception('no server can user')
@@ -141,7 +141,7 @@ class ServerDiscovery(EtcdServer, metaclass=Singleton):
 
     def get_point(self, server_name,server_key):
         server_node = self.server_colletion[server_name+'/'+server_key]
-        return ":".join([server_node['ip'], server_node['port']])
+        return ":".join([server_node['ip'], server_node['port']]),server_node['uuid']
 
     def choice_grpc_server(self, server_name, **kwargs):
         return self.get_point(server_name,self.balance_strategy.choice(self.filter_foce(server_name), **kwargs))
@@ -166,6 +166,7 @@ if __name__ == '__main__':
     server_inspecte = ServerDiscovery(balance_strategy="ProcssBalanceStrategy")
     server_inspecte.start()
     server_inspecte.tran_s()
-    node_info = server_inspecte.choice_grpc_server('/RoomServer/CreateRoom')
-    print(node_info)
-    print("启动成功")
+    for x in range(50):
+        node_info = server_inspecte.choice_grpc_server('/RoomServer/CreateRoom')
+        print(node_info)
+        print("启动成功")
