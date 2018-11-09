@@ -1,24 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
+{% load static %}
+
 <html lang="en">
 <head>
-    <!--<link rel="stylesheet" href="style.css">-->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>{% block title %}RPC detail{% endblock %}</title>
-</head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bootstrap CSS -->
+
+    <title>{% block title %}RPC detail{% endblock %}</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+
+        }
+
+        .container {
+            height: 100%;
+        }
+
+        /*.row {*/
+        /*margin: 0px;*/
+        /*}*/
+    </style>
+    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.css' %}">
+</head>
 <body>
-<div id="content">
-    {% block content %}{% endblock %}
+<header>
+
+    <div class="container">
+
+        <nav class="navbar sticky-top navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Sticky top</a>
+        </nav>
+    </div>
+</header>
+
+<img src="{% static 'e1d254e4-e3f7-11e8-9efe-488ad268fa53.png' %}" alt="My image">
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2 ">
+            <div class="container">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Active</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+
+                <!--边栏内容-->
+            </div>
+
+        </div>
+        <div class="span10">
+            <!--主体内容-->
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
 </div>
+<script src="{% static 'js\jquery-3.3.1.min.js' %} "></script>
+<script src="{% static 'bootstrap\js\bootstrap.min.js' %} "></script>
 </body>
 </html>
+
