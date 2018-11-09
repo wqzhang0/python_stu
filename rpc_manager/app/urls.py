@@ -20,6 +20,10 @@ from . import views
 urlpatterns = [
     # path('module/', ),
     # path('index/',IndexView.as_view(template_name="index.html")),
-    path('articles/2003/', views.rpc_list),
-    path('list', views.rpc_list),
+    path('', views.rpc_list),
+    # list
+    path('list/<path:node_path>', views.rpc_list,name='rpc_list'),
+    path('detail/<path:node_path>', views.rpc_detail,name='rpc_detail'),
+    # detail
+    # path('<path:node_path>/<path:node_path>', views.rpc_list),
 ]

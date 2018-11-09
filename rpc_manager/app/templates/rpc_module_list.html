@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block title %}RPC detail info{% endblock %}
+{% block content %}
+{% if module_list %}
+<ul>
+    {% for module in module_list %}
+    {% if module.is_dir %}
+    <li><a href="{% url 'rpc_list' module.path %}">{{ module.name }}</a></li>
+    {% else %}
+    <li><a href="{% url 'rpc_detail' module.path %}">{{ module.name }}</a></li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+<p>{{ entry.body }}</p>
+{% endblock %}
