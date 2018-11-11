@@ -7,7 +7,7 @@
 from celery import Celery
 
 app = Celery('tasks', backend  ='redis://localhost:6379/1', broker="redis://localhost:6379/0")
-# app = Celery('tasks', broker="redis://localhost:6379/0")
+# manager = Celery('tasks', broker="redis://localhost:6379/0")
 
 
 @app.task

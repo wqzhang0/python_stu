@@ -11,7 +11,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.debug = True
 engine = create_engine("mysql+pymysql://root:Mysql.520@47.98.211.102:3306/flask", max_overflow=5)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = ''
+# manager.config['SQLALCHEMY_DATABASE_URI'] = ''
 db = SQLAlchemy()
 db.create_all()
 
@@ -106,7 +106,7 @@ def not_found(error):
     return resp
 
 
-# with app.test_request_context():
+# with manager.test_request_context():
 #     print(url_for('index'))
 #     print(url_for('login'))
 #     print(url_for('login', next='/'))

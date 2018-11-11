@@ -43,9 +43,9 @@ db = SQLAlchemy()
 #     click.echo('Initialized the database.')
 
 
-# def init_app(app):
-#     app.teardown_appcontext(close_db)
-#     app.cli.add_command(init_db_command)
+# def init_app(manager):
+#     manager.teardown_appcontext(close_db)
+#     manager.cli.add_command(init_db_command)
 
 
 #
@@ -115,4 +115,4 @@ class Category(db.Model):
 
 
 # if __name__ == '__main__':
-#     db.create_all(app=create_app())
+#     db.create_all(manager=create_app())

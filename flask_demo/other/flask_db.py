@@ -2,15 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 
-# app = Flask(__name__)
+# manager = Flask(__name__)
 #
-# app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+# manager.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 #
-# app.debug = True
+# manager.debug = True
 engine = create_engine("mysql+pymysql://root:Mysql.520@47.98.211.102:3306/flask", max_overflow=5)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Mysql.520@47.98.211.102:3306/flask'
-# db = SQLAlchemy(app)
+# manager.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Mysql.520@47.98.211.102:3306/flask'
+# db = SQLAlchemy(manager)
 
 
 # class User(db.Model):
@@ -38,7 +38,7 @@ color = Table('color', metadata,
 
 # 创建数据表，如果数据表存在，则忽视
 metadata.create_all(engine)
-# app.run()
+# manager.run()
 engine.execute(
     "INSERT INTO color(id, name) VALUES ('1', 'liuyao');"
 )

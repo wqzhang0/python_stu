@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block title %}RPC server{% endblock %}
+{% block content %}
+    <h4>
+        <ol class="breadcrumb">
+            路径 :
+            {% if pre_module %}
+                <li><a href="{% url 'rpc_list' pre_module %}"> {{ pre_module | default_if_none:"/" }}</a></li>
+                <li class="active">{{ module_name |default_if_none:"/" }}</li>
+            {% else %}
+                <li><a href="{% url 'index' %}"> {{ pre_module| default_if_none:"/" }}</a></li>
+                {{ module_name |default_if_none:"" }}
+            {% endif %}
+        </ol>
+
+    </h4>
+    {% if module_list %}
+        <ul class="nav nav-pills nav-stacked">
+            {% for module in module_list %}
+                {% if module.is_dir %}
+                    <li>
+                        <h4><span class="label label-primary">模块</span>
+                            <a href="{% url 'rpc_list' module.path %}">  {{ module.name }}</a>
+                        </h4>
+                    </li>
+                {% else %}
+                    <li>
+                        <h4><span class="label label-info">详情</span>
+                            <a href="{% url 'rpc_detail' module.path %}"> {{ module.name }}</a>
+                        </h4>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No server are available.</p>
+    {% endif %}
+    <p>{{ entry.body }}</p>
+{% endblock %}

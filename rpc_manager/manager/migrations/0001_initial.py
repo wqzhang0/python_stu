@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
                 ('is_delete', models.BooleanField(default=False, verbose_name='是否删除')),
                 ('name', models.CharField(max_length=100, verbose_name='服务名称')),
                 ('desc', models.CharField(max_length=500, verbose_name='服务描述')),
-                ('super_module', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='app.RpcModule', verbose_name='父类模块')),
+                ('super_module', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='manager.RpcModule', verbose_name='父类模块')),
             ],
             options={
                 'db_table': 'rpc_module',
@@ -71,17 +71,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='rpcapi',
             name='module',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='app.RpcModule', verbose_name='父类模块'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='manager.RpcModule', verbose_name='父类模块'),
         ),
         migrations.AddField(
             model_name='rolepermission',
             name='RpcApi',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='role_per', to='app.RpcApi', verbose_name='角色'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='role_per', to='manager.RpcApi', verbose_name='角色'),
         ),
         migrations.AddField(
             model_name='rolepermission',
             name='RpcRole',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='role_per', to='app.RpcRole', verbose_name='角色'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='role_per', to='manager.RpcRole', verbose_name='角色'),
         ),
         migrations.AlterUniqueTogether(
             name='rolepermission',

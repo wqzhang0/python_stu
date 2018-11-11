@@ -215,10 +215,10 @@ CREATE TABLE `django_content_type` (
 -- Records of django_content_type
 -- ----------------------------
 INSERT INTO `django_content_type` VALUES ('1', 'admin', 'logentry');
-INSERT INTO `django_content_type` VALUES ('7', 'app', 'rolepermission');
-INSERT INTO `django_content_type` VALUES ('8', 'app', 'rpcapi');
-INSERT INTO `django_content_type` VALUES ('9', 'app', 'rpcmodule');
-INSERT INTO `django_content_type` VALUES ('10', 'app', 'rpcrole');
+INSERT INTO `django_content_type` VALUES ('7', 'manager', 'rolepermission');
+INSERT INTO `django_content_type` VALUES ('8', 'manager', 'rpcapi');
+INSERT INTO `django_content_type` VALUES ('9', 'manager', 'rpcmodule');
+INSERT INTO `django_content_type` VALUES ('10', 'manager', 'rpcrole');
 INSERT INTO `django_content_type` VALUES ('3', 'auth', 'group');
 INSERT INTO `django_content_type` VALUES ('2', 'auth', 'permission');
 INSERT INTO `django_content_type` VALUES ('4', 'auth', 'user');
@@ -245,7 +245,7 @@ INSERT INTO `django_migrations` VALUES ('2', 'auth', '0001_initial', '2018-10-14
 INSERT INTO `django_migrations` VALUES ('3', 'admin', '0001_initial', '2018-10-14 07:37:20.516386');
 INSERT INTO `django_migrations` VALUES ('4', 'admin', '0002_logentry_remove_auto_add', '2018-10-14 07:37:20.539388');
 INSERT INTO `django_migrations` VALUES ('5', 'admin', '0003_logentry_add_action_flag_choices', '2018-10-14 07:37:20.556385');
-INSERT INTO `django_migrations` VALUES ('6', 'app', '0001_initial', '2018-10-14 07:37:22.293407');
+INSERT INTO `django_migrations` VALUES ('6', 'manager', '0001_initial', '2018-10-14 07:37:22.293407');
 INSERT INTO `django_migrations` VALUES ('7', 'contenttypes', '0002_remove_content_type_name', '2018-10-14 07:37:22.629387');
 INSERT INTO `django_migrations` VALUES ('8', 'auth', '0002_alter_permission_name_max_length', '2018-10-14 07:37:22.871386');
 INSERT INTO `django_migrations` VALUES ('9', 'auth', '0003_alter_user_email_max_length', '2018-10-14 07:37:22.922387');

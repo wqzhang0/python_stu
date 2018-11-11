@@ -18,9 +18,11 @@ from django.urls import path, include
 
 from django.conf.urls.static import static
 
+from manager import views
 from . import settings
 
 urlpatterns = [
-                  path('admin/', admin.site.urls),
-                  path('app/', include('app.urls')),
+                  # path('admin/', admin.site.urls),
+                  path('', views.main, name='main'),
+                  path('manager/', include('manager.urls')),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

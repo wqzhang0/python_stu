@@ -1,0 +1,58 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+
+    <title>{% block title %}RPC detail{% endblock %}</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+</head>
+<body style="background-color: #333">
+<div class="jumbotron" style="padding: 10%;padding-bottom: 15%">
+    <h1>Server Manager</h1>
+    <p>There is no description of the homepage,</p>
+    <p>and it is a bit empty to put some words.</p>
+    <div style=" padding-top: 10%;padding-left: 30%;padding-right: 30%">
+        <form method="post" class="form-horizontal" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label">Account</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="account" name="account">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">password</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="password" name="password">
+                </div>
+            </div>
+            <div class="form-group">
+                {% if tip %}
+                    <p style="color: #b92c28;margin-left: 20px">{{ tip }}</p>
+
+                {% endif %}
+                <p><button class="btn btn-primary btn-lg" href="#" style="width:100%" type="submit">Login</button></p>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script src="{% static 'js\jquery-3.3.1.min.js' %} "></script>
+<script src="{% static 'bootstrap\js\bootstrap.min.js' %} "></script>
+</body>
+</html>
+
