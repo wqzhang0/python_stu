@@ -1,5 +1,7 @@
 import json
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views import generic
@@ -26,21 +28,23 @@ def main(request):
 
 @require_POST
 def rpc_login(request):
-    if request.POST['account'] == 'wqzhang' and request.POST['password'] == '1':
-        request.session['member_id'] = '1'
-        return HttpResponseRedirect("/manager/list")
-    else:
+    account = request.POST.get('account',None)
+    password = request.POST.get('password',None)
+    user = authenticate(request, username=account, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
         template_name = 'main.html'
         template = loader.get_template(template_name)
         return HttpResponse(template.render({'tip': 'Invalid account'}, request))
+    else:
+        return HttpResponseRedirect("/manager/list")
 
 
+
+@login_required
 @require_http_methods(['GET'])
 def rpc_list(request, node_path=None):
-    if request.session.get('member_id') != '1':
-        template_name = 'main.html'
-        template = loader.get_template(template_name)
-        return HttpResponse(template.render({'tip': 'please login'}, request))
 
     # 获取列表
     template_name = 'rpc_module_list.html'
