@@ -1,0 +1,64 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+
+    <title>{% block title %}RPC detail{% endblock %}</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+</head>
+<body>
+<header><h1 style="background-color: #0f0f0f;            padding: 3px;            margin: 0px;"><font color="#f0ffff"
+                                                                                                      style="padding: 10px;">管理平台</font>
+</h1>
+</header>
+
+<div class="container-fluid" style="height: 90%">
+
+    <div class="row" style="height: 100%">
+        <div class="col-md-2 " style="height: 100%">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+                <li><a href="/manager/list" target="mainFrame">服务管理</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="/manager/list/RoomServer/RandomJoinRoom" target="mainFrame">服务监测</a></li>
+                {#                <li><a href="">Nav item again</a></li>#}
+                {#                <li><a href="">One more nav</a></li>#}
+                {#                <li><a href="">Another nav item</a></li>#}
+                {#                <li><a href="">More navigation</a></li>#}
+            </ul>
+            {#            <ul class="nav nav-sidebar">#}
+            {#                <li><a href="">Nav item again</a></li>#}
+            {#                <li><a href="">One more nav</a></li>#}
+            {#                <li><a href="">Another nav item</a></li>#}
+            {#            </ul>#}
+
+        </div>
+        <div class="col-md-10" style="height: 100%">
+            <!--主体内容-->
+            <iframe src="/manager/list" id="mainFrame" name="mainFrame"
+                    frameborder="0" width="95%" height="100%" frameBorder="0">
+                {% block content %}{% endblock %}
+            </iframe>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js\jquery-3.3.1.min.js' %} "></script>
+<script src="{% static 'bootstrap\js\bootstrap.min.js' %} "></script>
+</body>
+</html>
+

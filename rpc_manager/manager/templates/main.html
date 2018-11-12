@@ -12,11 +12,7 @@
     <!-- Bootstrap CSS -->
 
     <title>{% block title %}RPC detail{% endblock %}</title>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
-    </style>
+
     <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 </head>
@@ -45,7 +41,9 @@
                     <p style="color: #b92c28;margin-left: 20px">{{ tip }}</p>
 
                 {% endif %}
-                <p><button class="btn btn-primary btn-lg" href="#" style="width:100%" type="submit">Login</button></p>
+                <p>
+                    <button class="btn btn-primary btn-lg" href="#" style="width:100%" type="submit">Login</button>
+                </p>
             </div>
 
         </form>

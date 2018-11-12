@@ -9,11 +9,19 @@ from django.views.decorators.http import require_http_methods, require_GET, requ
 
 
 class IndexView(generic.ListView):
-    template_name = 'index.html'
-    context_object_name = 'module_list'
+    template_name = 'base_frame.html'
+    # context_object_name = 'module_list'
 
-    def get_queryset(self):
-        return RpcModule.objects.filter(is_delete=False, super_module__isnull=True)
+    # def get_queryset(self):
+    #     return RpcModule.objects.filter(is_delete=False, super_module__isnull=True)
+
+
+@require_http_methods(['GET'])
+def homepage(request):
+    template_name = 'base_frame.html'
+    template = loader.get_template(template_name)
+    return HttpResponse(template.render({}, request))
+
 
 
 class ModuleList(generic.ListView):
@@ -41,8 +49,7 @@ def rpc_login(request):
         return HttpResponseRedirect("/manager/list")
 
 
-
-@login_required
+# @login_required
 @require_http_methods(['GET'])
 def rpc_list(request, node_path=None):
 

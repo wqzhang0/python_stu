@@ -1,14 +1,12 @@
 {% extends "base.html" %}
 
-
-{#{% block title %}RPC 服务节点详情{% endblock %}#}
 {% block content %}
-    <h4>    <ol class="breadcrumb">
-
-        模块 : <li><a href="{% url 'rpc_list' pre_module %}">{{ pre_module | default_if_none:"/" }}</a></li>
-        <li class="active">{{ module_name }}</li>
-
-     </ol>
+    <h4>
+        <ol class="breadcrumb">
+            模块 :
+            <li><a href="{% url 'rpc_list' pre_module %}">{{ pre_module | default_if_none:"/" }}</a></li>
+            <li class="active">{{ module_name }}</li>
+        </ol>
 
     </h4>
 
@@ -64,7 +62,7 @@
             <label class="col-sm-2 control-label">线上环境</label>
             <div class="col-sm-10">
                 <label>
-                    <input type="checkbox" name="pro" value="true" {% if pro %}checked='checked'{% endif %} >
+                    <input type="checkbox" name="pro" value="true" {% if pro %}checked='checked'{% endif %}>
                 </label>
             </div>
         </div>
@@ -72,7 +70,7 @@
             <label class="col-sm-2 control-label">是否正常服务</label>
             <div class="col-sm-10">
                 <label>
-                    <input type="checkbox" name="offline" value="true" {% if offline %}checked='checked'{% endif %} >
+                    <input type="checkbox" name="offline" value="true" {% if offline %}checked='checked'{% endif %}>
                 </label>
             </div>
         </div>
