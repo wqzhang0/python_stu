@@ -21,6 +21,8 @@ def convert2Para(dict):
     return data
 
 
+
+
 if __name__ == '__main__':
     xml = getData({'trans_no': 'SG0001', 'resources_type': '', 'hospital_name': ''})
     hospitals = xml['hospitals']['hospital']
