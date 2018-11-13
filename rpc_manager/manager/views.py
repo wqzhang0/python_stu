@@ -2,66 +2,46 @@ import json
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.views import generic
+from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
 
 
-class IndexView(generic.ListView):
-    template_name = 'base_frame.html'
-    # context_object_name = 'module_list'
-
-    # def get_queryset(self):
-    #     return RpcModule.objects.filter(is_delete=False, super_module__isnull=True)
-
-
+@login_required
 @require_http_methods(['GET'])
 def homepage(request):
     template_name = 'base_frame.html'
-    template = loader.get_template(template_name)
-    return HttpResponse(template.render({}, request))
+    return TemplateResponse(request, template_name)
 
-
-
-class ModuleList(generic.ListView):
-    template_name = 'manager/'
 
 @require_http_methods(['GET'])
 def main(request):
     template_name = 'main.html'
-    template = loader.get_template(template_name)
-    return HttpResponse(template.render({}, request))
+    return TemplateResponse(request, template_name)
 
 
-@require_http_methods(['GET','POST'])
+@require_http_methods(['GET', 'POST'])
 def rpc_login(request):
-    if request.method =='POST':
-        account = request.POST.get('account',None)
-        password = request.POST.get('password',None)
+    template_name = 'main.html'
+
+    if request.method == 'POST':
+        account = request.POST.get('account', None)
+        password = request.POST.get('password', None)
         user = authenticate(request, username=account, password=password)
         if user is not None:
             login(request, user)
-            # Redirect to a success page.
-            return HttpResponseRedirect("/manager/list")
+            return HttpResponseRedirect("/manager/index")
         else:
-            template_name = 'main.html'
-            template = loader.get_template(template_name)
-            return HttpResponse(template.render({'tip': 'Invalid account'}, request))
+            return TemplateResponse(request, template_name, {'tip': 'Invalid account'})
     else:
-        template_name = 'main.html'
-        template = loader.get_template(template_name)
-        return HttpResponse(template.render({'tip': 'Invalid account'}, request))
+        return TemplateResponse(request, template_name, {'tip': 'Invalid account'})
 
 
-
-# @login_required
+@login_required
 @require_http_methods(['GET'])
 def rpc_list(request, node_path=None):
-
     # 获取列表
     template_name = 'rpc_module_list.html'
-    template = loader.get_template(template_name)
     from grpc_microservice.etcd_minoter.etcd_manager import EtcdServer
     etcd = EtcdServer().etcd_client
     if not node_path:
@@ -101,13 +81,13 @@ def rpc_list(request, node_path=None):
         'pre_module': _pre,
         'module_list': module_list,
     }
-    return HttpResponse(template.render(context, request))
+    return TemplateResponse(request, template_name, context)
 
 
+@login_required
 @require_GET
 def rpc_detail(request, node_path=None):
     template_name = 'rpc_detail.html'
-    template = loader.get_template(template_name)
 
     from grpc_microservice.etcd_minoter.etcd_manager import EtcdServer
     etcd = EtcdServer().etcd_client
@@ -130,13 +110,13 @@ def rpc_detail(request, node_path=None):
     context['pre_module'] = _pre
     context['key'] = node_path
 
-    return HttpResponse(template.render(context, request))
+    return TemplateResponse(request, template_name, context)
 
 
+@login_required
 @require_POST
 def rpc_update(request, node_path):
     template_name = 'rpc_detail.html'
-    template = loader.get_template(template_name)
 
     from grpc_microservice.etcd_minoter.etcd_manager import EtcdServer
     etcd = EtcdServer().etcd_client
@@ -167,5 +147,4 @@ def rpc_update(request, node_path):
     context['module_name'] = module_name
     context['pre_module'] = _pre
     context['key'] = node_path
-
-    return HttpResponse(template.render(context, request))
+    return TemplateResponse(request, template_name, context)

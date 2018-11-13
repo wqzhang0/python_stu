@@ -1,44 +1,16 @@
-import pprint
-
 import requests
 
-# _d = '"<?xml version="1.0" encoding="utf-8"?> <body><head><userid>smt</userid><password>smt@123456</password><trans_no>GZYZ001</trans_no></head><request><GZYZ001><USERID>ee2018</USERID><NAME>测试</NAME><IDCARD>330624198902070937</IDCARD><PHONE>18868139981</PHONE><SENDIP>192.168.1.109</SENDIP><SENDDATE>2018-11-12 11:37:00</SENDDATE><SENDDEVICE></SENDDEVICE><SMSCODE>123456</SMSCODE><SENDTERMINAL>smt</SENDTERMINAL></GZYZ001></request></body>"'
-# _d = '"<?xml version="1.0" encoding="utf-8"?> <body><head><userid>smt</userid><password>smt@123456</password>
-# <trans_no>GZYZ001</trans_no></head><request><GZYZ001></GZYZ001></request></body>"'
-import xmltodict
-data = xmltodict.unparse({'body': {'head': {'userid': 'smt', 'password': 'smt@123456','trans_no':'GZYZ001'}, 'request': {'GZYZ001':{'USERID':'ee2018','NAME':'测试','IDCARD':330624198902070937,'PHONE':'18868139981','SENDIP':'192.168.1.109',
-                                                                                                                                    'SENDDATE':'2018-11-09 16:57:00','SENDDEVICE':'','SMSCODE':'123456','SENDTERMINAL':'smt'}}}})
-print(data.replace('\n',''))
-# _d = 'sdf'
-_d = data.replace('\n','').replace('<','&lt;')
-_d = _d.replace('"','&quot;')
-_d = _d.replace('>','&quot;')
+request_body = '''<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:ns1="http://tempuri.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><ns0:Body><ns1:Process><ns1:XmlString>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;body&gt;&lt;head&gt;&lt;password&gt;smt@123456&lt;/password&gt;&lt;userid&gt;smt&lt;/userid&gt;&lt;trans_no&gt;GZYZ001&lt;/trans_no&gt;&lt;/head&gt;&lt;request&gt;&lt;GZYZ001&gt;&lt;SENDIP&gt;192.168.1.109&lt;/SENDIP&gt;&lt;NAME&gt;\xe6\xb5\x8b\xe8\xaf\x95&lt;/NAME&gt;&lt;SENDTERMINAL&gt;smt&lt;/SENDTERMINAL&gt;&lt;SENDDEVICE&gt;&lt;/SENDDEVICE&gt;&lt;USERID&gt;ee2018&lt;/USERID&gt;&lt;SENDDATE&gt;2018-11-09 16:57:00&lt;/SENDDATE&gt;&lt;PHONE&gt;18868139981&lt;/PHONE&gt;&lt;IDCARD&gt;330624198902070937&lt;/IDCARD&gt;&lt;SMSCODE&gt;123456&lt;/SMSCODE&gt;&lt;/GZYZ001&gt;&lt;/request&gt;&lt;/body&gt;</ns1:XmlString></ns1:Process></ns0:Body></SOAP-ENV:Envelope>
+'''.encode('utf-8')
 
-# _d = 'sdf'
-request_body = ('''<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <Process xmlns="http://tempuri.org/">
-      <XmlString>\''''
-                + _d
-                + '''\'</XmlString>
-    </Process>
-  </soap:Body>
-</soap:Envelope>''').encode('utf-8')
+request_headers = {
+    'Content-Type': 'text/xml'}
 
-request_headers = {'Post': 'AuthenticateService.asmx',
-                   'Host': 'hddy.nbwjw.gov.cn',
-                   'Content-Type': 'text/xml; charset=utf-8',
-                   'Content-Length': str(len(request_body)),
-                   'SOAPAction': 'http://tempuri.org/Process'}
-
-# response = requests.post('http://hddy.nbwjw.gov.cn/AuthenticateService.asmx',
 response = requests.post('http://hddy.nbwjw.gov.cn/AuthenticateService.asmx',
                          data=request_body, headers=request_headers)
 
 request = response.request
 print(response.status_code)
 print(requests.utils.get_unicode_from_response(response))
-
 
 # pprint.pprint(response)
