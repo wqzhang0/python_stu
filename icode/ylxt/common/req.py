@@ -1,5 +1,5 @@
+import requests
 import xmltodict
-from pip._vendor import requests
 
 
 def getData(param, _url='http://api.nbws.gov.cn/ServiceTrans.asmx/Serviceprocessing',timeout=2):

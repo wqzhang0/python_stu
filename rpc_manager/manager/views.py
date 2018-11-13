@@ -26,19 +26,25 @@ def main(request):
     return HttpResponse(template.render({}, request))
 
 
-@require_POST
+@require_http_methods(['GET','POST'])
 def rpc_login(request):
-    account = request.POST.get('account',None)
-    password = request.POST.get('password',None)
-    user = authenticate(request, username=account, password=password)
-    if user is not None:
-        login(request, user)
-        # Redirect to a success page.
+    if request.method =='POST':
+        account = request.POST.get('account',None)
+        password = request.POST.get('password',None)
+        user = authenticate(request, username=account, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirect to a success page.
+            return HttpResponseRedirect("/manager/list")
+        else:
+            template_name = 'main.html'
+            template = loader.get_template(template_name)
+            return HttpResponse(template.render({'tip': 'Invalid account'}, request))
+    else:
         template_name = 'main.html'
         template = loader.get_template(template_name)
         return HttpResponse(template.render({'tip': 'Invalid account'}, request))
-    else:
-        return HttpResponseRedirect("/manager/list")
+
 
 
 
