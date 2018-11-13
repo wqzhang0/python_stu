@@ -12,55 +12,20 @@
     <!-- Bootstrap CSS -->
 
     <title>{% block title %}RPC detail{% endblock %}</title>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-        }
 
-        /*.row {*/
-        /*margin: 0px;*/
-        /*}*/
-    </style>
     <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+    <style type="text/css">
+            .form-horizontal .form-group {
+                margin-right: 0px;
+                margin-left: 0px;
+            }
+        </style>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 </head>
 <body>
 {#<header><h1 style="background-color: #0f0f0f;            padding: 3px;            margin: 0px;">管理平台</h1>#}
 {#</header>#}
-
-<div class="container-fluid" style="height: 100%">
-
-    <div class="row" style="height: 100%">
-        <div class="col-md-3 " style="height: 100%">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">服务管理</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">服务监测</a></li>
-{#                <li><a href="">Nav item again</a></li>#}
-{#                <li><a href="">One more nav</a></li>#}
-{#                <li><a href="">Another nav item</a></li>#}
-{#                <li><a href="">More navigation</a></li>#}
-            </ul>
-{#            <ul class="nav nav-sidebar">#}
-{#                <li><a href="">Nav item again</a></li>#}
-{#                <li><a href="">One more nav</a></li>#}
-{#                <li><a href="">Another nav item</a></li>#}
-{#            </ul>#}
-
-        </div>
-        <div class="col-md-9" style="height: 100%">
-            <!--主体内容-->
-            <div id="content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
+{% block content %}{% endblock %}
 <script src="{% static 'js\jquery-3.3.1.min.js' %} "></script>
 <script src="{% static 'bootstrap\js\bootstrap.min.js' %} "></script>
 </body>

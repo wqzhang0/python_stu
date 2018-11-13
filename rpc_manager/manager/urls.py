@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     # path('module/', ),
-    # path('index/',IndexView.as_view(template_name="index.html")),
+    path('index/',views.homepage,name='homepage'),
     path('list', views.rpc_list,name='index'),
     path('login', views.rpc_login,name='login'),
     path('list/<path:node_path>', views.rpc_list,name='rpc_list'),
