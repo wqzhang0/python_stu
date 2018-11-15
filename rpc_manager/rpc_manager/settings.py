@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'oyyi@vr3-&d&r_5i4k&^srg67olx-gd-zb9&5_*kaq#tqwhu+$'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -50,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-LOGIN_URL= 'login'
+LOGIN_URL = 'login'
 ROOT_URLCONF = 'rpc_manager.urls'
 
 TEMPLATES = [
@@ -71,7 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rpc_manager.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -96,10 +93,19 @@ DATABASES = {
         'PASSWORD': 'Mysql.520',
         'HOST': '47.98.211.102',
         'PORT': '3306',
-    }
+    },
+    'OPTIONS': {
+        # isolation_levels = {
+        #         'read uncommitted',
+        #         'read committed',
+        #         'repeatable read',
+        #         'serializable',
+        #     }
+        'isolation_level': 'serializable',
+    },
 }
 
-
+CONN_MAX_AGE = 10
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -119,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -133,13 +138,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
-
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
