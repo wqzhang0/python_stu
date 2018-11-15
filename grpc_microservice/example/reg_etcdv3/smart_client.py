@@ -11,7 +11,7 @@ def run():
     server_inspecte = ServerDiscovery(balance_strategy="ProcssBalanceStrategy")
     server_inspecte.start()
     server_inspecte.tran_s()
-    for x in range(50):
+    for x in range(11):
         node_info = server_inspecte.choice_grpc_server('/RoomServer/CreateRoom')
         print(node_info)
         response = RoomServerStubProxy().RandomJoinRoom(room_server_pb2.RandomJoinRoomRequest(player_id=1112, type=3))

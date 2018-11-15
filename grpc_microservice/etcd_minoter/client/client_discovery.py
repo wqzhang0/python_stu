@@ -83,7 +83,9 @@ class ServerDiscovery(EtcdServer, metaclass=Singleton):
             if isinstance(event, PutEvent):
                 print(str(event.value, encoding='utf-8'))
                 print('放入')
+                # TODO 刷新改节点 或者新增服务节点
             elif isinstance(event, DeleteEvent):
+                # TODO 刪除服务节点
                 print('删除')
 
     def tran_s(self):
@@ -92,7 +94,6 @@ class ServerDiscovery(EtcdServer, metaclass=Singleton):
         _server_colletion = self.server_colletion
 
         for _uuid, _server_info in _server_colletion.items():
-
             _path = _uuid.split('/')
             _module = _path[1]
             _api = _path[2]
@@ -142,10 +143,12 @@ class ServerDiscovery(EtcdServer, metaclass=Singleton):
         return ":".join([server_node['ip'], server_node['port']]), server_node['uuid']
 
     def choice_grpc_server(self, server_name, **kwargs):
+        # TODO 需要增加节点的活跃度，和权重
         return self.get_point(server_name, self.balance_strategy.choice(self.filter_foce(server_name), **kwargs))
 
     def designation_point(self, ):
         """
+        # TODO  指定服务端点调用
         指定服务端点
         """
         # 测试环境分为是否需要验证

@@ -122,16 +122,26 @@ def rpc_update(request, node_path):
     etcd = EtcdServer().etcd_client
     _p = '/GRPC' + '/' + node_path
     _v, _meta = etcd.get(_p)
+
     _v = _v.decode("utf-8")
     context = json.loads(_v, encoding='utf-8')
 
     context['dec'] = request.POST['dec']
     context['doc'] = request.POST['doc']
     context['weight'] = request.POST['weight']
-    context['force'] = request.POST.get('force', False)
-    context['pro'] = request.POST.get('pro', False)
-    context['offline'] = request.POST.get('offline', False)
-    etcd.put(_p, json.dumps(context, ensure_ascii=False))
+    if request.POST.get('force', False) == '1':
+        context['force'] = True
+    else:
+        context['force'] = False
+    if request.POST.get('pro', False) == '1':
+        context['pro'] = True
+    else:
+        context['pro'] = False
+    if request.POST.get('offline', False) == '1':
+        context['offline'] = True
+    else:
+        context['offline'] = False
+    etcd.put(_p, json.dumps(context, ensure_ascii=False),lease=_meta.lease_id)
 
     _v, _meta = etcd.get(_p)
     _v = _v.decode("utf-8")

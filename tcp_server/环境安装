@@ -1,0 +1,2 @@
+pip install Twisted-18.9.0-cp36-cp36m-win32.whl
+pip install pypiwin32
