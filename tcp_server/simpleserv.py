@@ -59,8 +59,25 @@ class QOTDFactory(Factory):
         return QOTD()
 
 # 8007 is the port you want to run under. Choose something >1024
+
+
+from twisted.web import server, resource
+from twisted.internet import reactor, endpoints
+
+class Counter(resource.Resource):
+    isLeaf = True
+    numberRequests = 0
+
+    def render_GET(self, request):
+        self.numberRequests += 1
+        request.setHeader(b"content-type", b"text/plain")
+        content = u"I am request #{}\n".format(self.numberRequests)
+        return content.encode("ascii")
+
 endpoint = TCP4ServerEndpoint(reactor, 20001)
 endpoint.listen(QOTDFactory())
+endpoints.serverFromString(reactor, "tcp:20002").listen(server.Site(Counter()))
+
 reactor.run()
 
 #
