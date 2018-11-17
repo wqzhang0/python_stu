@@ -1,3 +1,4 @@
+import random
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -20,6 +21,7 @@ class RoomServer(room_server_pb2_grpc.RoomServerServicer):
         """
         随机加入房间
         """
+        time.sleep(random.randrange(10))
         return JoinRoomReply(common={'code': 400, 'error_msg': "sdf"})
 
     @server_monitor(server_name)

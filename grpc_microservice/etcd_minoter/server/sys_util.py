@@ -9,7 +9,8 @@ SO_BINDTODEVICE = 25
 def getIP():
     sysstr = platform.system()
     if (sysstr == "Windows"):
-        ip = [a for a in os.popen('route print').readlines() if ' 0.0.0.0 ' in a][0].split()[-2]
+        ip = '127.0.0.1'
+        # ip = [a for a in os.popen('route print').readlines() if ' 0.0.0.0 ' in a][0].split()[-2]
         print("Call Windows tasks")
     elif (sysstr == "Linux"):
         print("Call Linux tasks")

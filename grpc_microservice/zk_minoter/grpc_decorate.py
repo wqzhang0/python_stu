@@ -6,6 +6,8 @@ import time
 
 from grpc_microservice.server.common.server.key_pool import SERVER_POOL, SERVER_UUIDS
 
+from grpc_microservice.etcd_minoter.server.server_register import ServerInspecte
+
 
 def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
     """
@@ -14,27 +16,34 @@ def server_monitor(server_name, force=False, dec="", weight=100, offline=False):
     _module = server_name
 
     def decorate(func):
-        _api = func.__name__
-        _api = '/' + '/'.join([_module, _api])
+        _api_name = func.__name__
+        _server_name_uuid = '/' + '/'.join([_module, _api_name])
         if not SERVER_POOL.get('per_info', None):
             SERVER_POOL['per_info'] = {}
         token = str(uuid.uuid1())
-        SERVER_POOL['per_info'][_api] = {'doc': func.__doc__,
-                                         'force': force,
-                                         'dec': dec,
-                                         'weight': weight,
-                                         'offline': offline,
-                                         'uuid': token,
-                                         'ip': '127.0.0.1',
-                                         'port': '50002',
-                                         }
-        SERVER_UUIDS[_api] = token
+        SERVER_POOL['per_info'][_server_name_uuid] = {'doc': func.__doc__,
+                                                      'force': force,
+                                                      'dec': dec,
+                                                      'weight': weight,
+                                                      'offline': offline,
+                                                      'uuid': token,
+                                                      'ip': '127.0.0.1',
+                                                      'port': '50002',
+                                                      }
+        SERVER_UUIDS[_server_name_uuid] = token
+
         @wraps(func)
         def wrapper(*args, **kwargs):
+            ServerInspecte().update_active_index(_api_name,1)
             start = time.time()
-            print("{} {} invoke".format(_module, _api))
-            result = func(*args, **kwargs)
-
+            print("{} {} invoke".format(_module, _server_name_uuid))
+            try:
+                result = func(*args, **kwargs)
+            except Exception as e :
+                # ServerInspecte().update_active_index(_api_name, -1)
+                raise e
+            else:
+                # ServerInspecte().update_active_index(_api_name, -1)
             end = time.time()
             print(func.__name__, end - start)
             return result
@@ -77,7 +86,7 @@ def choose_address(server_name):
     选择所连接的服务地址 这里预留接口
     """
     # return ServerInspecte().choice_grpc_server(server_name)
-    return '127.0.0.1:50002' ,'token'
+    return '127.0.0.1:50002', 'token'
 
 
 def proxy_grpc_func(stub, module_name):
