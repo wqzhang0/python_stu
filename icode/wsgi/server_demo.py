@@ -1,4 +1,4 @@
-# server.py
+# rpc_server.py
 # 从wsgiref模块导入:
 from wsgiref.simple_server import make_server
 
