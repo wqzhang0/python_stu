@@ -5,6 +5,15 @@ secondary_excel_path = "G:\SynologyDrive\文档\人大项目\各种业务导入�
 
 from openpyxl import load_workbook
 
+
+class OrderInfo:
+    def __init__(self, x, y, code, catelog):
+        self.x = x
+        self.y = y
+        self.code = code
+        self.catelog = catelog
+
+
 # wb = Workbook(secondary_excel_path)
 wb = load_workbook(secondary_excel_path)
 print(wb.sheetnames)
@@ -18,6 +27,15 @@ else:
 print('------------------------------')
 print(ws2.max_column)
 print(ws2.max_row)
+catalog_name = ""
+
+# 判断总函数,按照5行 递增
+max_column  = ws2.max_column
+max_row  = ws2.max_row
+index_column = 1
+for row in ws2.iter_rows(min_row=index_column,max_col=5,max_row=max_row):
+    # 方块
+    pass
 for row in ws2.iter_rows(min_row=1, max_col=3, max_row=200):
     for cell in row:
         if isinstance(cell, Cell):
@@ -25,7 +43,7 @@ for row in ws2.iter_rows(min_row=1, max_col=3, max_row=200):
         elif isinstance(cell, MergedCell):
             print("合并")
         else:
-            raise  Exception("sss")
+            raise Exception("sss")
         print(cell)
 # d2 = ws2.cell(row=4, column=2)
 # print(d2)
