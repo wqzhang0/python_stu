@@ -60,3 +60,5 @@ p = Point(1, 2)
 # p.x = 1.2
 p.add(2)
 print(p.y)
+
+

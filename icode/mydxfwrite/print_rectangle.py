@@ -4,9 +4,9 @@ import random
 
 def gen_data():
     line_list = []
-    for i in range(100):
+    for i in range(2):
         # line_list.append({"num": 6500 + i, "line": [random.randint(70, 180), random.randint(175, 300)]})
-        line_list.append({"num": 6500 + i, "line": [random.randint(175, 300), random.randint(70, 180)]})
+        line_list.append({"num": 7500 + i, "line": [random.randint(175, 300), random.randint(70, 180)]})
 
     return line_list
 

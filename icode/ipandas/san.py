@@ -12,7 +12,7 @@
 from pathlib import Path, PurePath
 
 # base_path = PurePath("F:")
-base_path = Path("G:\SynologyDrive\文档\裁床\历史文档\\2019年定做登记")
+base_path = Path("D:\PYTHON\\2019年定做登记")
 print(base_path.absolute())
 print(base_path.cwd())
 for time_dir in base_path.iterdir():
